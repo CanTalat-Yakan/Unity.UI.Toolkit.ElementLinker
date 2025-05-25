@@ -1,0 +1,16 @@
+{
+    "name": "UnityEssentials.UIScriptComponents",
+    "rootNamespace": "UnityEssentials",
+    "references": [
+        "GUID:e652dc2b5a5451045a50f217499425ea"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

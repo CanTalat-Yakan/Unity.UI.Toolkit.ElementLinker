@@ -39,19 +39,4 @@ namespace UnityEssentials
         public void SetElementPath(string path) =>
             _targetElementPath = path;
     }
-
-    public static class VisualElementExtensions
-    {
-        public static TemplateContainer GetFirstAncestorOfType<TemplateContainer>(this VisualElement element)
-        {
-            var current = element;
-            while (current != null)
-            {
-                if (current is TemplateContainer tc)
-                    return tc;
-                current = current.parent;
-            }
-            return default;
-        }
-    }
 }

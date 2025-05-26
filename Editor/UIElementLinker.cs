@@ -13,15 +13,21 @@ namespace UnityEssentials
         [InitializeOnLoadMethod]
         public static void Initialize()
         {
-            UIBuilderHook.OnInitialization += OnInitialization;
+            UIBuilderHook.OnFocusedChanged += OnFocusedChanged;
             UIBuilderHook.OnSelectionChanged += OnSelectionChanged;
         }
 
-        private static void OnInitialization() =>
-            AddButtonToUIBuilder(UIBuilderHook.Inspector);
+        private static void OnFocusedChanged()
+        {
+            if (s_buttonElement == null)
+                AddButtonToUIBuilder(UIBuilderHook.Inspector);
+        }
 
-        private static void OnSelectionChanged() =>
-            ChangeButtonState();
+        private static void OnSelectionChanged()
+        {
+            if (s_buttonElement != null)
+                ChangeButtonState();
+        }
 
         private static void AddButtonToUIBuilder(VisualElement root)
         {
@@ -39,15 +45,9 @@ namespace UnityEssentials
         private static void ChangeButtonState()
         {
             var element = UIBuilderHook.GetSelectedElement();
-            if (element == null)
-                s_buttonElement.visible = false;
-            else
-            {
-                s_buttonElement.visible = true;
-
-                var name = UIBuilderHook.GetElementName(element);
-                s_buttonElement.text = "Create Link for " + name;
-            }
+            s_buttonElement.visible = element != null;
+            if (element != null)
+                s_buttonElement.text = "Create Link for " + UIBuilderHook.GetElementName(element);
         }
 
         private static void InstantiateLinkToVisualElement()
@@ -63,12 +63,7 @@ namespace UnityEssentials
 
             var go = new GameObject(name);
             go.transform.parent = ui.transform;
-
-            var link = go.AddComponent<UIElementLink>();
-            link.SetElementPath(path);
-
-            var provider = go.AddComponent<UIElementProvider>();
-            provider.SetLink(link);
+            go.AddComponent<UIElementLink>().SetElementPath(path);
 
             Selection.activeGameObject = go;
         }

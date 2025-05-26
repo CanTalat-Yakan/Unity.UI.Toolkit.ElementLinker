@@ -15,12 +15,12 @@ namespace UnityEssentials
     [AddComponentMenu("UI Toolkit/UI Element Link")]
     public partial class UIElementLink : MonoBehaviour
     {
-        [SerializeField, HideInInspector] private UIElementLinkData _data = new();
+        [SerializeField, HideInInspector] public UIElementLinkData Data = new();
 
         private UIDocument _document;
         private VisualElement _linkedElement;
 
-        public VisualElement LinkedElement => _linkedElement;
+        public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
 
         void Reset() => FindDocument();
         void OnEnable() => RefreshLink();
@@ -33,42 +33,28 @@ namespace UnityEssentials
         }
 
         [Button]
-        public void RefreshLink()
+        public VisualElement RefreshLink()
         {
             FindDocument();
             _linkedElement = null;
 
-            if (_document?.rootVisualElement != null && _data.Path != null)
+            if (_document?.rootVisualElement != null && Data.Path != null)
             {
-                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, _data.Path);
+                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data.Path);
 
                 if (_linkedElement == null)
-                    Debug.LogWarning($"No element found at path: {string.Join(" > ", _data.Path.Select(p => p.Name))}", this);
+                    Debug.LogWarning($"No element found at path: {string.Join(" > ", Data.Path.Select(e => e.Name))}", this);
+                else
+                {
+                    var orderPath = string.Join(" > ", Data.Path.Select(p => $"{p.Name}[{p.OrderIndex}]"));
+                    Debug.Log($"Linked Element: {_linkedElement.name} (Order Path: {orderPath})", this);
+                }
             }
+
+            return _linkedElement;
         }
 
         public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
-            _data.Path = path.Select(e => new UIElementPathEntry
-            {
-                Name = e.Name,
-                TypeIndex = e.TypeIndex,
-                OrderIndex = e.OrderIndex
-            }).ToArray();
-
-        [Button]
-        public void PrintLinkedElement()
-        {
-            RefreshLink();
-            if (_linkedElement != null && _data != null)
-            {
-                var orderPath = string.Join(" > ", _data.Path.Select(p => $"{p.Name}[{p.OrderIndex}]"));
-                Debug.Log($"Linked Element: {_linkedElement.name} (Order Path: {orderPath})", this);
-            }
-            else
-            {
-                Debug.Log("Linked Element: None", this);
-            }
-        }
-
+            Data.Path = path.ToArray();
     }
 }

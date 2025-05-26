@@ -2,8 +2,8 @@
     "name": "UnityEssentials.UIElementLinker.Editor",
     "rootNamespace": "UnityEssentials",
     "references": [
-        "GUID:e652dc2b5a5451045a50f217499425ea",
-        "GUID:23d88515503fc844cabb0e2fd918af85"
+        "GUID:23d88515503fc844cabb0e2fd918af85",
+        "GUID:52cfcc800872b5a42beb3d0feda1d60c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

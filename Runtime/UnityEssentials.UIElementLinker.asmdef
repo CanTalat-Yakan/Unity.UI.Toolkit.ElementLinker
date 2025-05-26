@@ -1,5 +1,5 @@
 {
-    "name": "UnityEssentials.UIScriptComponents",
+    "name": "UnityEssentials.UIElementLinker",
     "rootNamespace": "UnityEssentials",
     "references": [
         "GUID:e652dc2b5a5451045a50f217499425ea"

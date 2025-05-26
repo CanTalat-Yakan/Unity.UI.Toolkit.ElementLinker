@@ -54,7 +54,7 @@ namespace UnityEssentials
         {
             var element = UIBuilderHook.GetSelectedElement();
             var path = UIBuilderHookUtilities.GetElementPath(element, out var orderIndex);
-                
+
             var asset = UIBuilderHook.VisualTreeAsset;
 
             var ui = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)

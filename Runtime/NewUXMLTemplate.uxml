@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; justify-content: center; align-self: center; align-items: center; scale: 1 1; width: 100%;">
+    <ui:VisualElement name="Test" style="flex-grow: 1; justify-content: center; align-self: center; align-items: center; scale: 1 1; width: 100%;">
         <ui:Label text="Label" name="Label" style="font-size: 140px;" />
         <ui:Label text="Label" name="Label" style="font-size: 140px;" />
-        <ui:Label text="Label" name="THISISABITCH" style="font-size: 140px;" />
+        <ui:Label text="Label" name="THISISABITC" style="font-size: 140px;" />
     </ui:VisualElement>
 </ui:UXML>

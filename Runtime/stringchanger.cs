@@ -5,21 +5,20 @@ namespace UnityEssentials
 {
     public class stringchanger : MonoBehaviour
     {
-        [SerializeField]
-        UIElementLink link;
+        UIElementLink _link;
+        public void Start() => _link = GetComponent<UIElementLink>();
 
-        void Start()
+        [Button]
+        public void Change()
         {
-            if(link.LinkedElement is Label label)
+            _link.RefreshLink(); // Refresh the link to ensure it is up-to-date
+            _link.PrintLinkedElement(); // Refresh the link to ensure it is up-to-date
+            Debug.Log(_link.LinkedElement); // Log the linked element to the console
+            if (_link.LinkedElement is Label label)
             {
                 label.text = "New Text"; // Change the text of the label
+                Debug.Log("Linked element is a Label: " + label.text); // Log the current text of the label
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
         }
     }
 }

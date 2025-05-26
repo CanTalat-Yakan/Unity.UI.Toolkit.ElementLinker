@@ -65,7 +65,7 @@ namespace UnityEssentials
             var ui = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
                 .Where(d => d.visualTreeAsset == asset).First();
 
-            var go = new GameObject(displayName);
+            var go = new GameObject();
             go.transform.parent = ui.transform;
             go.AddComponent<UIElementLink>().SetElementPath(path);
 

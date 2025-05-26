@@ -12,6 +12,7 @@ namespace UnityEssentials
         public UIElementPathEntry[] Path;
     }
 
+    [ExecuteAlways]
     [AddComponentMenu("UI Toolkit/UI Element Link")]
     public partial class UIElementLink : MonoBehaviour
     {
@@ -25,12 +26,10 @@ namespace UnityEssentials
         void Reset() => FindDocument();
         void OnEnable() => RefreshLink();
         void Awake() => RefreshLink();
+        private void Update() => SetGameObjectName();
 
-        void FindDocument()
-        {
-            if (!_document)
-                _document = GetComponentInParent<UIDocument>();
-        }
+        public UIDocument FindDocument() =>
+            _document ??= GetComponentInParent<UIDocument>();
 
         [Button]
         public VisualElement RefreshLink()
@@ -39,22 +38,15 @@ namespace UnityEssentials
             _linkedElement = null;
 
             if (_document?.rootVisualElement != null && Data.Path != null)
-            {
                 _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data.Path);
-
-                if (_linkedElement == null)
-                    Debug.LogWarning($"No element found at path: {string.Join(" > ", Data.Path.Select(e => e.Name))}", this);
-                else
-                {
-                    var orderPath = string.Join(" > ", Data.Path.Select(p => $"{p.Name}[{p.OrderIndex}]"));
-                    Debug.Log($"Linked Element: {_linkedElement.name} (Order Path: {orderPath})", this);
-                }
-            }
 
             return _linkedElement;
         }
 
         public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
             Data.Path = path.ToArray();
+
+        private void SetGameObjectName() =>
+            gameObject.name = Data.Path[^1].DisplayName;
     }
 }

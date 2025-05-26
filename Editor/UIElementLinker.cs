@@ -55,11 +55,6 @@ namespace UnityEssentials
             var element = UIBuilderHook.GetSelectedElement();
             var path = UIBuilderHookUtilities.GetElementPath(element, out var orderIndex);
                 
-            var name = UIBuilderHookUtilities.GetElementName(element);
-            var displayName = UIBuilderHookUtilities.GetElementDisplayName(element);
-            if(orderIndex > 0)
-                displayName += $" {orderIndex}";
-
             var asset = UIBuilderHook.VisualTreeAsset;
 
             var ui = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)

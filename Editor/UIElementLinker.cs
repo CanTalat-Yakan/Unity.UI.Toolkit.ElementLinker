@@ -47,14 +47,14 @@ namespace UnityEssentials
             var element = UIBuilderHook.GetSelectedElement();
             s_buttonElement.visible = element != null;
             if (element != null)
-                s_buttonElement.text = "Create Link for " + UIBuilderHook.GetElementName(element);
+                s_buttonElement.text = "Create Link for " + UIBuilderHookUtilities.GetElementName(element);
         }
 
         private static void InstantiateLinkToVisualElement()
         {
             var element = UIBuilderHook.GetSelectedElement();
-            var name = UIBuilderHook.GetElementName(element);
-            var path = UIBuilderHook.GetElementPath(element);
+            var name = UIBuilderHookUtilities.GetElementName(element);
+            var path = UIBuilderHookUtilities.GetElementPath(element);
 
             var asset = UIBuilderHook.VisualTreeAsset;
 

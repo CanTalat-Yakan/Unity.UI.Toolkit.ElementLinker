@@ -2,6 +2,7 @@
     "name": "UnityEssentials.UIElementLinker",
     "rootNamespace": "UnityEssentials",
     "references": [
+        "GUID:a7a4ad3babb1c61419c55e4cbe4e1802",
         "GUID:e652dc2b5a5451045a50f217499425ea"
     ],
     "includePlatforms": [],

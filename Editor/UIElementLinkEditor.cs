@@ -19,8 +19,7 @@ namespace UnityEssentials
             if (uiElementLink == null)
                 return;
 
-            Debug.Log($"UIElementLinkEditor: Selected GameObject '{selectedGameObject.name}' with linked element '{uiElementLink.LinkedElement?.name}'.");
-            UIBuilderHookUtilities.SetSelectedElementByPath(uiElementLink.LinkedElement);
+            UIBuilderHookUtilities.SetSelectedElement(uiElementLink.Data.Path);
         }
     }
 }

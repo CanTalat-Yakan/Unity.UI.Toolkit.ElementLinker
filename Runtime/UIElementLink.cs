@@ -32,6 +32,7 @@ namespace UnityEssentials
 
         void Reset() => FindDocument();
         void OnEnable() => RefreshLink();
+        void Awake() => RefreshLink();
 
         void FindDocument()
         {

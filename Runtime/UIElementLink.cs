@@ -43,6 +43,22 @@ namespace UnityEssentials
             return _linkedElement;
         }
 
+        [Button]
+        public void LinkToThisVisualElement()
+        {
+            if (_document?.rootVisualElement == null)
+                return;
+
+            var selectedPath = UIBuilderHookUtilities.GetSelectedElementPath(out var orderIndex);
+            if(selectedPath == null || !selectedPath.Any())
+                return;
+
+            Data.Path = selectedPath.ToArray();
+            Data.Path[^1].OrderIndex = orderIndex;
+
+            _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, selectedPath);
+        }
+
         public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
             Data.Path = path.ToArray();
 

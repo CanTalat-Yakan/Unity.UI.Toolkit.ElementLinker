@@ -15,11 +15,11 @@ namespace UnityEssentials
         {
             var selectedGameObject = gameObjects.First();
 
-            var uiElementLink = selectedGameObject.GetComponent<UIElementLink>();
-            if (uiElementLink == null)
+            var link = selectedGameObject.GetComponent<UIElementLink>();
+            if (link == null)
                 return;
 
-            UIBuilderHookUtilities.SetSelectedElement(uiElementLink.Data.Path);
+            UIBuilderHookUtilities.SetSelectedElement(link.Data.Path);
         }
     }
 }

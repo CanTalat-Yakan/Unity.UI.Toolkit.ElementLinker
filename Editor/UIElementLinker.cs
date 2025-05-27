@@ -8,7 +8,7 @@ namespace UnityEssentials
 {
     public class UIElementLinker
     {
-        static Button s_buttonElement;
+        private static Button s_buttonElement;
 
         [InitializeOnLoadMethod]
         public static void Initialize()

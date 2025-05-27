@@ -23,18 +23,18 @@ namespace UnityEssentials
 
         public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
 
-        void Reset() => FindDocument();
-        void OnEnable() => RefreshLink();
-        void Awake() => RefreshLink();
-        private void Update() => SetGameObjectName();
+        public void Reset() => FetchDocument();
+        public void OnEnable() => RefreshLink();
+        public void Awake() => RefreshLink();
+        public void Update() => SetGameObjectName();
 
-        public UIDocument FindDocument() =>
+        public UIDocument FetchDocument() =>
             _document ??= GetComponentInParent<UIDocument>();
 
         [Button]
         public VisualElement RefreshLink()
         {
-            FindDocument();
+            FetchDocument();
             _linkedElement = null;
 
             if (_document?.rootVisualElement != null && Data.Path != null)

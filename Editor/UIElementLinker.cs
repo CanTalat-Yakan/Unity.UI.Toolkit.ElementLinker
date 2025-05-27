@@ -35,7 +35,6 @@ namespace UnityEssentials
                 return;
 
             s_buttonElement = new Button();
-            s_buttonElement.text = "Click Me!";
             s_buttonElement.RegisterCallback<ClickEvent>(evt => InstantiateLinkToVisualElement());
             s_buttonElement.visible = UIBuilderHook.GetSelectedElement() != null;
 

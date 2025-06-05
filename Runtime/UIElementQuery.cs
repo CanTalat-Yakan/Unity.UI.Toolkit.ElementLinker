@@ -52,17 +52,17 @@ namespace UnityEssentials
         public VisualElement[] QueryElementsOfType(UIElementType type)
         {
             var result = new List<VisualElement>();
-            TraverseAndCollect(_document.rootVisualElement, type, result);
+            TraverseAndCollect(_document.rootVisualElement, type, result, isRoot: true);
             return result.ToArray();
         }
 
-        private void TraverseAndCollect(VisualElement element, UIElementType type, List<VisualElement> result)
+        private void TraverseAndCollect(VisualElement element, UIElementType type, List<VisualElement> result, bool isRoot = false)
         {
-            if (UIElementTypes.GetElementType(element) == type)
+            if (!isRoot && UIElementTypes.GetElementType(element) == type)
                 result.Add(element);
 
             foreach (var child in element.Children())
-                TraverseAndCollect(child, type, result);
+                TraverseAndCollect(child, type, result, isRoot: false);
         }
 
         private void SetHelpBoxMessage()

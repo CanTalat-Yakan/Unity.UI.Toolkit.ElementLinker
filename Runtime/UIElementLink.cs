@@ -1,32 +1,30 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace UnityEssentials
 {
-    [Serializable]
-    public class UIElementLinkData
-    {
-        public UIElementPathEntry[] Path;
-    }
-
     [ExecuteAlways]
     [AddComponentMenu("UI Toolkit/UI Element Link")]
     public partial class UIElementLink : MonoBehaviour
     {
-        [SerializeField, HideInInspector] public UIElementLinkData Data = new();
+        [Info] public string _;
 
-        private UIDocument _document;
-        private VisualElement _linkedElement;
+        [Space]
+        [SerializeField, HideInInspector] public UIElementPathEntry[] Data;
 
         public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
+        private VisualElement _linkedElement;
+
+        private UIDocument _document;
 
         public void Reset() => FetchDocument();
         public void OnEnable() => RefreshLink();
         public void Awake() => RefreshLink();
-        public void Update() => SetGameObjectName();
 
         public UIDocument FetchDocument() =>
             _document ??= GetComponentInParent<UIDocument>();
@@ -37,8 +35,10 @@ namespace UnityEssentials
             FetchDocument();
             _linkedElement = null;
 
-            if (_document?.rootVisualElement != null && Data.Path != null)
-                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data.Path);
+            if (_document?.rootVisualElement != null && Data != null)
+                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data);
+
+            SetHelpBoxMessage();
 
             return _linkedElement;
         }
@@ -50,19 +50,47 @@ namespace UnityEssentials
                 return;
 
             var selectedPath = UIBuilderHookUtilities.GetSelectedElementPath(out var orderIndex);
-            if(selectedPath == null || !selectedPath.Any())
+            if (selectedPath == null || !selectedPath.Any())
                 return;
 
-            Data.Path = selectedPath.ToArray();
-            Data.Path[^1].OrderIndex = orderIndex;
+            Data = selectedPath.ToArray();
+            Data[^1].OrderIndex = orderIndex;
 
             _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, selectedPath);
+
+            SetHelpBoxMessage();
         }
 
-        public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
-            Data.Path = path.ToArray();
 
-        private void SetGameObjectName() =>
-            gameObject.name = Data.Path[^1].DisplayName;
+        public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
+            Data = path.ToArray();
+
+        private void SetHelpBoxMessage()
+        {
+#if UNITY_EDITOR
+            if (_linkedElement != null)
+            {
+                var linkedElementName = string.IsNullOrEmpty(_linkedElement.name) ? string.Empty : $"#{_linkedElement.name} ";
+                var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
+                var uiAssetName = _document.visualTreeAsset.name;
+                _ = $"Linked Element {linkedElementName}of type {linkedElementType} in {uiAssetName}";
+            }
+            else _ = "Error - Path not found";
+#endif
+        }
+
+#if UNITY_EDITOR
+        public void Update() => SetGameObjectName();
+        private void SetGameObjectName()
+        {
+            if (Data.Length == 0)
+                return;
+
+            string name = (Data.Length == 1)
+                ? Data[0].DisplayName
+                : Data[^1].DisplayName;
+            gameObject.name = ObjectNames.NicifyVariableName(name);
+        }
+#endif
     }
 }

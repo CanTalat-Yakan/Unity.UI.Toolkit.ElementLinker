@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UnityEssentials
 {
@@ -19,7 +20,8 @@ namespace UnityEssentials
             if (link == null)
                 return;
 
-            UIBuilderHookUtilities.SetSelectedElement(link.Data.Path);
+            if (link.Data.Length != 0)
+                UIBuilderHookUtilities.SetSelectedElement(link.Data);
         }
     }
 }

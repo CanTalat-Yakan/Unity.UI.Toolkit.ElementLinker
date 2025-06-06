@@ -16,11 +16,7 @@ namespace UnityEssentials
 
         [Space]
         public UIElementType Type = UIElementType.Button;
-        [OnValueChanged("Type")]
-        public void OnTypeValueChanged()
-        {
-            RefreshLinks();
-        }
+        [OnValueChanged("Type")] public void OnTypeValueChanged() => RefreshLinks();
 
         public Action<VisualElement[]> OnRefreshLinks;
 

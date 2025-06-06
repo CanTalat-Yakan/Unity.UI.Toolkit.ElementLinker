@@ -6,6 +6,9 @@ namespace UnityEssentials
 {
     public class BaseScriptComponent<T> : MonoBehaviour where T : VisualElement
     {
+        public UIElementType Type => _type ??= FetchType();
+        private UIElementType? _type;
+        
         public UIDocument Document => _document ??= FetchDocument();
         private UIDocument _document;
 
@@ -31,6 +34,7 @@ namespace UnityEssentials
             if (link != null)
                 if (link.LinkedElement is T linkedElement)
                 {
+                    _type = UIElementTypes.GetElementType(link.LinkedElement);
                     _document = link.FetchDocument();
                     return new T[] { link.LinkedElement as T };
                 }
@@ -39,6 +43,7 @@ namespace UnityEssentials
             if (query != null)
                 if (UIElementTypes.GetElementType(query.Type) is T linkedElement)
                 {
+                    _type = UIElementTypes.GetElementType(link.LinkedElement);
                     _document = query.FetchDocument();
                     return (T[])query.LinkedElements;
                 }
@@ -52,5 +57,10 @@ namespace UnityEssentials
             return _document;
         }
 
+        private UIElementType FetchType()
+        {
+            FetchLinkedElements();
+            return _type.Value;
+        }
     }
 }

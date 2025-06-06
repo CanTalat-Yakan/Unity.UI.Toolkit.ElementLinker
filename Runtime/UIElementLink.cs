@@ -61,9 +61,11 @@ namespace UnityEssentials
             SetHelpBoxMessage();
         }
 
-
-        public void SetElementPath(IEnumerable<UIElementPathEntry> path) =>
+        public void SetElementPath(IEnumerable<UIElementPathEntry> path)
+        {
             Data = path.ToArray();
+            RefreshLink();
+        }
 
         private void SetHelpBoxMessage()
         {

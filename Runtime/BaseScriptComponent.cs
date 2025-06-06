@@ -1,22 +1,25 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEssentials;
 
 namespace UnityEssentials
 {
-    public class BaseScriptComponent<T> : MonoBehaviour where T : VisualElement
+    public class BaseScriptComponent : MonoBehaviour
     {
         public UIElementType Type => FetchType();
+        private UIElementType _type;
 
         public UIDocument Document => _document ??= FetchDocument();
         private UIDocument _document;
 
-        public T[] LinkedElements => _linkedElements ??= FetchLinkedElements();
-        private T[] _linkedElements;
+        public VisualElement[] LinkedElements => _linkedElements ??= FetchLinkedElements();
+        public VisualElement[] _linkedElements;
 
         public bool HasElements => LinkedElements != null && LinkedElements.Length > 0;
 
-        public void IterateLinkedElements(Action<T> action)
+        public void IterateLinkedElements(Action<VisualElement> action)
         {
             foreach (var element in LinkedElements)
             {
@@ -27,27 +30,25 @@ namespace UnityEssentials
             }
         }
 
-        private T[] FetchLinkedElements()
+        private VisualElement[] FetchLinkedElements()
         {
             var link = GetComponent<UIElementLink>();
             if (link != null)
-                if (link.LinkedElement is T)
-                {
-                    _document = link.FetchDocument();
-
-                    link.OnRefreshLink += (e) => { _linkedElements = new T[] { e as T }; };
-                    return new T[] { link.LinkedElement as T };
-                }
+            {
+                _type = UIElementTypes.GetElementType(link.LinkedElement);
+                _document = link.FetchDocument();
+                link.OnRefreshLink += (e) => { _linkedElements = new VisualElement[] { e }; };
+                return new VisualElement[] { link.LinkedElement };
+            }
 
             var query = GetComponent<UIElementQuery>();
             if (query != null)
-                if (UIElementTypes.GetElementType(query.Type) is T)
-                {
-                    _document = query.FetchDocument();
-
-                    query.OnRefreshLinks += (e) => { _linkedElements = e as T[]; };
-                    return (T[])query.LinkedElements;
-                }
+            {
+                _type = query.Type;
+                _document = query.FetchDocument();
+                query.OnRefreshLinks += (e) => { _linkedElements = e; };
+                return query.LinkedElements;
+            }
 
             return null;
         }
@@ -60,10 +61,22 @@ namespace UnityEssentials
 
         private UIElementType FetchType()
         {
-            if (!HasElements)
-                return UIElementType.None;
+            FetchLinkedElements();
+            return _type;
+        }
+    }
+}
 
-            return UIElementTypes.GetElementType(LinkedElements[0]);
+public class BaseScriptComponent<T> : BaseScriptComponent where T : VisualElement
+{
+    public new T[] LinkedElements => base.LinkedElements?.OfType<T>().ToArray();
+    public void IterateLinkedElements(Action<T> action)
+    {
+        foreach (var element in LinkedElements)
+        {
+            if (element == null)
+                continue;
+            action.Invoke(element);
         }
     }
 }

@@ -68,7 +68,10 @@ namespace UnityEssentials
         private void SetHelpBoxMessage()
         {
 #if UNITY_EDITOR
-            var linkedElementCount = LinkedElements.Length;
+            if (_linkedElements == null)
+                return;
+
+            var linkedElementCount = _linkedElements.Length;
             var linkedElementType = Type;
             var uiAssetName = _document.visualTreeAsset.name;
 

@@ -6,34 +6,13 @@ namespace UnityEssentials
 {
     public class BaseScriptComponent<T> : MonoBehaviour where T : VisualElement
     {
-        public UIDocument Document { get; private set; }
+        public UIDocument Document => _document ??= FetchDocument();
+        private UIDocument _document;
 
-        private T[] _linkedElements;
         public T[] LinkedElements => _linkedElements ??= FetchLinkedElements();
+        private T[] _linkedElements;
+
         public bool HasElements => LinkedElements != null && LinkedElements.Length > 0;
-
-        public T[] FetchLinkedElements()
-        {
-            var link = GetComponent<UIElementLink>();
-            if (link != null)
-            {
-                if (link.LinkedElement is T linkedElement)
-                    return new T[] { link.LinkedElement as T };
-
-                Document = link.FetchDocument();
-            }
-
-            var query = GetComponent<UIElementQuery>();
-            if (query != null)
-            {
-                if (UIElementTypes.GetElementType(query.Type) is T linkedElement)
-                    return (T[])query.LinkedElements;
-
-                Document = query.FetchDocument();
-            }
-
-            return null;
-        }
 
         public void IterateLinkedElements(Action<T> action)
         {
@@ -45,5 +24,33 @@ namespace UnityEssentials
                 action.Invoke(element);
             }
         }
+
+        private T[] FetchLinkedElements()
+        {
+            var link = GetComponent<UIElementLink>();
+            if (link != null)
+                if (link.LinkedElement is T linkedElement)
+                {
+                    _document = link.FetchDocument();
+                    return new T[] { link.LinkedElement as T };
+                }
+
+            var query = GetComponent<UIElementQuery>();
+            if (query != null)
+                if (UIElementTypes.GetElementType(query.Type) is T linkedElement)
+                {
+                    _document = query.FetchDocument();
+                    return (T[])query.LinkedElements;
+                }
+
+            return null;
+        }
+
+        private UIDocument FetchDocument()
+        {
+            FetchLinkedElements();
+            return _document;
+        }
+
     }
 }

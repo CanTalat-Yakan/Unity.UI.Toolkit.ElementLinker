@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,7 +16,13 @@ namespace UnityEssentials
 
         [Space]
         public UIElementType Type = UIElementType.Button;
-        [OnValueChanged("Type")] public void OnTypeValueChanged() => RefreshLinks();
+        [OnValueChanged("Type")]
+        public void OnTypeValueChanged()
+        {
+            RefreshLinks();
+        }
+
+        public Action<VisualElement[]> OnRefreshLinks;
 
         public VisualElement[] LinkedElements => _linkedElements ??= RefreshLinks();
         private VisualElement[] _linkedElements;
@@ -39,6 +46,8 @@ namespace UnityEssentials
                 _linkedElements = QueryElementsOfType(Type);
 
             SetHelpBoxMessage();
+
+            OnRefreshLinks?.Invoke(_linkedElements);
 
             return _linkedElements;
         }

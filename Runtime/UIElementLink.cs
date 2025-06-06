@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,6 +18,8 @@ namespace UnityEssentials
 
         [Space]
         [SerializeField, HideInInspector] public UIElementPathEntry[] Data;
+
+        public Action<VisualElement> OnRefreshLink;
 
         public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
         private VisualElement _linkedElement;
@@ -39,6 +43,8 @@ namespace UnityEssentials
                 _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data);
 
             SetHelpBoxMessage();
+
+            OnRefreshLink?.Invoke(_linkedElement);
 
             return _linkedElement;
         }

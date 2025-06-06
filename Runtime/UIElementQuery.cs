@@ -71,6 +71,7 @@ namespace UnityEssentials
             var linkedElementCount = LinkedElements.Length;
             var linkedElementType = Type;
             var uiAssetName = _document.visualTreeAsset.name;
+
             _ = $"Querying {linkedElementCount} elements of type {linkedElementType} in {uiAssetName}";
 #endif
         }

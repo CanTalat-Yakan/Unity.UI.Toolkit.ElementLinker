@@ -70,9 +70,12 @@ namespace UnityEssentials
 #if UNITY_EDITOR
             if (_linkedElement != null)
             {
-                var linkedElementName = string.IsNullOrEmpty(_linkedElement.name) ? string.Empty : $"#{_linkedElement.name} ";
+                var linkedElementName = string.IsNullOrEmpty(_linkedElement.name)
+                    ? string.Empty
+                    : $"#{_linkedElement.name} ";
                 var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
                 var uiAssetName = _document.visualTreeAsset.name;
+
                 _ = $"Linked Element {linkedElementName}of type {linkedElementType} in {uiAssetName}";
             }
             else _ = "Error - Path not found";
@@ -83,13 +86,15 @@ namespace UnityEssentials
         public void Update() => SetGameObjectName();
         private void SetGameObjectName()
         {
-            if (Data.Length == 0)
+            if (Data?.Length == 0)
                 return;
 
-            string name = (Data.Length == 1)
-                ? Data[0].DisplayName
-                : Data[^1].DisplayName;
-            gameObject.name = ObjectNames.NicifyVariableName(name);
+            string linkedElementName = string.IsNullOrEmpty(Data[^1].Name) 
+                ? string.Empty 
+                : $" ({Data[^1].DisplayName})";
+            string linkedElementType = UIElementTypes.GetElementType(_linkedElement).ToString();
+
+            gameObject.name = linkedElementType + linkedElementName;
         }
 #endif
     }

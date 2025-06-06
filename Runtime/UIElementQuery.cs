@@ -36,8 +36,8 @@ namespace UnityEssentials
         public VisualElement[] RefreshLinks()
         {
             FetchDocument();
-            _linkedElements = null;
 
+            _linkedElements = null;
             if (_document?.rootVisualElement != null)
                 _linkedElements = QueryElementsOfType(Type);
 

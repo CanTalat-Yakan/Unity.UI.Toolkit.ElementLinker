@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace UnityEssentials
 {
     [ExecuteAlways]
@@ -37,8 +33,8 @@ namespace UnityEssentials
         public VisualElement RefreshLink()
         {
             FetchDocument();
-            _linkedElement = null;
 
+            _linkedElement = null;
             if (_document?.rootVisualElement != null && Data != null)
                 _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data);
 
@@ -86,7 +82,7 @@ namespace UnityEssentials
 
                 _ = $"Linked Element {linkedElementName}of type {linkedElementType} in {uiAssetName}";
             }
-            else _ = "Error - Path not found";
+            else _ = "Error - Linked Path Not Found!";
 #endif
         }
 

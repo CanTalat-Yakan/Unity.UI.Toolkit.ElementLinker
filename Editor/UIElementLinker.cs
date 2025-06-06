@@ -56,11 +56,11 @@ namespace UnityEssentials
 
             var asset = UIBuilderHook.VisualTreeAsset;
 
-            var ui = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+            var document = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
                 .Where(d => d.visualTreeAsset == asset).First();
 
             var go = new GameObject();
-            go.transform.parent = ui.transform;
+            go.transform.parent = document.transform;
             go.AddComponent<UIElementLink>().SetElementPath(path);
 
             Selection.activeGameObject = go;

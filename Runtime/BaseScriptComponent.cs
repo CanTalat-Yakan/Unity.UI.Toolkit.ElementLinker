@@ -2,10 +2,23 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEssentials;
 
 namespace UnityEssentials
 {
+    public class BaseScriptComponent<T> : BaseScriptComponent where T : VisualElement
+    {
+        public new T[] LinkedElements => base.LinkedElements?.OfType<T>().ToArray();
+        public void IterateLinkedElements(Action<T> action)
+        {
+            foreach (var element in LinkedElements)
+            {
+                if (element == null)
+                    continue;
+                action.Invoke(element);
+            }
+        }
+    }
+
     public class BaseScriptComponent : MonoBehaviour
     {
         public UIElementType Type => FetchType();
@@ -63,20 +76,6 @@ namespace UnityEssentials
         {
             FetchLinkedElements();
             return _type;
-        }
-    }
-}
-
-public class BaseScriptComponent<T> : BaseScriptComponent where T : VisualElement
-{
-    public new T[] LinkedElements => base.LinkedElements?.OfType<T>().ToArray();
-    public void IterateLinkedElements(Action<T> action)
-    {
-        foreach (var element in LinkedElements)
-        {
-            if (element == null)
-                continue;
-            action.Invoke(element);
         }
     }
 }

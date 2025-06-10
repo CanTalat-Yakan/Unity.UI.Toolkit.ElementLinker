@@ -91,7 +91,6 @@ namespace UnityEssentials
             if (Selection.activeGameObject == null)
                 return false;
 
-            Debug.Log(Selection.activeGameObject.GetComponent<UIDocument>() != null);
             return Selection.activeGameObject.GetComponent<UIDocument>() != null;
         }
 

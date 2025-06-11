@@ -20,8 +20,8 @@ namespace UnityEssentials
             if (link == null)
                 return;
 
-            if (link.Data.Length != 0)
-                UIBuilderHookUtilities.SetSelectedElement(link.Data);
+            if (link.Data.Path?.Length != 0)
+                UIBuilderHookUtilities.SetSelectedElement(link.Data.Path);
         }
     }
 }

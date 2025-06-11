@@ -6,21 +6,28 @@ using System;
 
 namespace UnityEssentials
 {
+    [Serializable]
+    public class UIElementPathData
+    {
+        public UIElementPathEntry[] Path;
+    }
+
     [ExecuteAlways]
     [AddComponentMenu("UI Toolkit/UI Element Link")]
     public partial class UIElementLink : MonoBehaviour
     {
-        [Info] public string _;
+        [Info]
+        [SerializeField] private string _info;
 
         [Space]
-        [SerializeField, HideInInspector] public UIElementPathEntry[] Data;
+        public UIElementPathData Data;
 
         public Action<VisualElement> OnRefreshLink;
 
         public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
         private VisualElement _linkedElement;
 
-        private UIDocument _document;
+        [SerializeField] private UIDocument _document;
 
         public void Reset() => FetchDocument();
         public void OnEnable() => RefreshLink();
@@ -36,7 +43,7 @@ namespace UnityEssentials
 
             _linkedElement = null;
             if (_document?.rootVisualElement != null && Data != null)
-                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data);
+                _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, Data.Path);
 
             SetHelpBoxMessage();
 
@@ -55,8 +62,8 @@ namespace UnityEssentials
             if (selectedPath == null || !selectedPath.Any())
                 return;
 
-            Data = selectedPath.ToArray();
-            Data[^1].OrderIndex = orderIndex;
+            Data.Path = selectedPath.ToArray();
+            Data.Path[^1].OrderIndex = orderIndex;
 
             _linkedElement = UIBuilderHookUtilities.FindElementByPath(_document.rootVisualElement, selectedPath);
 
@@ -65,7 +72,7 @@ namespace UnityEssentials
 
         public void SetElementPath(IEnumerable<UIElementPathEntry> path)
         {
-            Data = path.ToArray();
+            Data.Path = path.ToArray();
             RefreshLink();
         }
 
@@ -80,9 +87,9 @@ namespace UnityEssentials
                 var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
                 var uiAssetName = _document.visualTreeAsset.name;
 
-                _ = $"Linked Element {linkedElementName}of type {linkedElementType} in {uiAssetName}";
+                _info = $"Linked Element {linkedElementName}of type {linkedElementType} in {uiAssetName}";
             }
-            else _ = "Error - Linked Path Not Found!";
+            else _info = "Error - Linked Path Not Found!";
 #endif
         }
 
@@ -90,12 +97,12 @@ namespace UnityEssentials
         public void Update() => SetGameObjectName();
         private void SetGameObjectName()
         {
-            if (Data?.Length == 0)
+            if (Data.Path?.Length == 0)
                 return;
 
-            string linkedElementName = string.IsNullOrEmpty(Data[^1].Name) 
-                ? string.Empty 
-                : $" ({Data[^1].DisplayName})";
+            string linkedElementName = string.IsNullOrEmpty(Data.Path[^1].Name)
+                ? string.Empty
+                : $" ({Data.Path[^1].DisplayName})";
             string linkedElementType = UIElementTypes.GetElementType(_linkedElement).ToString();
 
             gameObject.name = linkedElementType + linkedElementName;

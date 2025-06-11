@@ -12,7 +12,8 @@ namespace UnityEssentials
     [AddComponentMenu("UI Toolkit/UI Element Query")]
     public class UIElementQuery : MonoBehaviour
     {
-        [Info] public string _;
+        [Info]
+        [SerializeField] private string _info;
 
         [Space]
         public UIElementType Type = UIElementType.Button;
@@ -80,7 +81,7 @@ namespace UnityEssentials
             var linkedElementType = Type;
             var uiAssetName = _document.visualTreeAsset.name;
 
-            _ = $"Querying {linkedElementCount} elements of type {linkedElementType} in {uiAssetName}";
+            _info = $"Querying {linkedElementCount} elements of type {linkedElementType} in {uiAssetName}";
 #endif
         }
 

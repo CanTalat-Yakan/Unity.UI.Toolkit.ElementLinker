@@ -20,14 +20,14 @@ namespace UnityEssentials
         [SerializeField] private string _info;
 
         [Space]
-        public UIElementPathData Data;
+        [HideInInspector] public UIElementPathData Data;
 
         public Action<VisualElement> OnRefreshLink;
 
         public VisualElement LinkedElement => _linkedElement ??= RefreshLink();
         private VisualElement _linkedElement;
 
-        [SerializeField] private UIDocument _document;
+        [SerializeField, HideInInspector] private UIDocument _document;
 
         public void Reset() => FetchDocument();
         public void OnEnable() => RefreshLink();

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling.Memory.Experimental;
 using UnityEngine.UIElements;
-using System;
 
 namespace UnityEssentials
 {
@@ -72,7 +73,19 @@ namespace UnityEssentials
 
         public void SetElementPath(IEnumerable<UIElementPathEntry> path)
         {
+            if (path == null || _document?.rootVisualElement == null)
+                return;
+
             Data.Path = path.ToArray();
+            RefreshLink();
+        }
+
+        public void SetElementPath(VisualElement element)
+        {
+            if(element == null || _document?.rootVisualElement == null)
+                return;
+
+            Data.Path = UIBuilderHookUtilities.GetElementPath(element, out _).ToArray(); 
             RefreshLink();
         }
 
@@ -94,18 +107,49 @@ namespace UnityEssentials
         }
 
 #if UNITY_EDITOR
-        public void Update() => SetGameObjectName();
+        public void Update() => 
+            SetGameObjectName();
+
         private void SetGameObjectName()
         {
+            if (Data == null)
+                return;
+
             if (Data.Path?.Length == 0)
                 return;
 
-            string linkedElementName = string.IsNullOrEmpty(Data.Path[^1].Name)
+            string linkedElementName = string.IsNullOrEmpty(GetName())
                 ? string.Empty
-                : $" ({Data.Path[^1].DisplayName})";
+                : $" ({GetDisplayName()})";
             string linkedElementType = UIElementTypes.GetElementType(_linkedElement).ToString();
 
             gameObject.name = linkedElementType + linkedElementName;
+        }
+        
+        private string GetName()
+        {
+            if (Data == null || Data.Path == null || Data.Path.Length == 0)
+                return string.Empty;
+
+            if (Data.Path.Length == 1)
+                return Data.Path[0].Name;
+            else if (Data.Path.Length > 1)
+                return Data.Path[^1].Name;
+
+            return string.Empty;
+        }
+
+        private string GetDisplayName()
+        {
+            if (Data == null || Data.Path == null || Data.Path.Length == 0)
+                return string.Empty;
+
+            if (Data.Path.Length == 1)
+                return Data.Path[0].DisplayName;
+            else if (Data.Path.Length > 1)
+                return Data.Path[^1].DisplayName;
+
+            return string.Empty;
         }
 #endif
     }

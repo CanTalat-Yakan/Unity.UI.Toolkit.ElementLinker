@@ -30,6 +30,11 @@ namespace UnityEssentials
         public void OnEnable() => RefreshLinks();
         public void Awake() => RefreshLinks();
 
+#if UNITY_EDITOR
+        public void Update() =>
+            gameObject.name = $"Query {ObjectNames.NicifyVariableName(Type.ToString())}s";
+#endif
+
         public UIDocument FetchDocument() =>
             _document ??= GetComponentInParent<UIDocument>();
 
@@ -84,35 +89,5 @@ namespace UnityEssentials
             _info = $"Querying {linkedElementCount} elements of type {linkedElementType} in {uiAssetName}";
 #endif
         }
-
-#if UNITY_EDITOR
-        [MenuItem("GameObject/ UI Toolkit/ Add Query", true, priority = 100)]
-        private static bool ValidateAddQuery()
-        {
-            if (Selection.activeGameObject == null)
-                return false;
-
-            return Selection.activeGameObject.GetComponent<UIDocument>() != null;
-        }
-
-        [MenuItem("GameObject/ UI Toolkit/ Add Query", false, priority = 100)]
-        private static void InstantiateQuery(MenuCommand menuCommand)
-        {
-            GameObject parent = Selection.activeGameObject;
-            GameObject go = new GameObject("Query UIElements");
-            go.AddComponent<UIElementQuery>();
-            go.transform.SetParent(parent.transform, false);
-
-            GameObjectUtility.SetParentAndAlign(go, parent);
-
-            Undo.RegisterCreatedObjectUndo(go, "Create Query UIElements");
-            Selection.activeObject = go;
-        }
-
-        public void Update() => SetGameObjectName();
-        private void SetGameObjectName() =>
-            gameObject.name = $"Query {ObjectNames.NicifyVariableName(Type.ToString())}s";
-
-#endif
     }
 }

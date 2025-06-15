@@ -23,6 +23,29 @@ namespace UnityEssentials
             if (link.Data.Path?.Length != 0)
                 UIBuilderHookUtilities.SetSelectedElement(link.Data.Path);
         }
+
+        [MenuItem("GameObject/ UI Toolkit/ Add Query", true, priority = 100)]
+        private static bool ValidateAddQuery()
+        {
+            if (Selection.activeGameObject == null)
+                return false;
+
+            return Selection.activeGameObject.GetComponent<UIDocument>() != null;
+        }
+
+        [MenuItem("GameObject/ UI Toolkit/ Add Query", false, priority = 100)]
+        private static void InstantiateQuery(MenuCommand menuCommand)
+        {
+            GameObject parent = Selection.activeGameObject;
+            GameObject go = new GameObject("Query UIElements");
+            go.AddComponent<UIElementQuery>();
+            go.transform.SetParent(parent.transform, false);
+
+            GameObjectUtility.SetParentAndAlign(go, parent);
+
+            Undo.RegisterCreatedObjectUndo(go, "Create Query UIElements");
+            Selection.activeObject = go;
+        }
     }
 }
 #endif

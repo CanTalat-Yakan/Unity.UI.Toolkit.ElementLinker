@@ -57,7 +57,14 @@ namespace UnityEssentials
             var asset = UIBuilderHook.VisualTreeAsset;
 
             var document = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
-                .Where(d => d.visualTreeAsset == asset).First();
+                .Where(d => d.visualTreeAsset == asset)
+                .FirstOrDefault();
+
+            if (document == null)
+            {
+                Debug.LogWarning("No UIDocument found with the matching VisualTreeAsset.");
+                return;
+            }
 
             var go = new GameObject();
             go.transform.parent = document.transform;

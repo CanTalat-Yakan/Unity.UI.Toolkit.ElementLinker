@@ -1,7 +1,7 @@
 {
-  "name": "com.unityessentials.uiscriptcomponents",
+  "name": "com.unityessentials.uielementlinker",
   "version": "1.0.0",
-  "displayName": "UnityEssentials UIScriptComponents",
+  "displayName": "UnityEssentials UIElementLinker",
   "description": "This is a part of the UnityEssentials Ecosystem",
   "unity": "2022.1",
   "unityRelease": "",

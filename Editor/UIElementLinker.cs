@@ -51,7 +51,7 @@ namespace UnityEssentials
 
         private static void InstantiateLinkToVisualElement()
         {
-            var element = UIBuilderHook.GetSelectedElement();
+            var path = UIBuilderHookUtilities.GetSelectedElementPath(out _);
             var asset = UIBuilderHook.VisualTreeAsset;
             var document = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
                 .Where(d => d.visualTreeAsset == asset)
@@ -64,7 +64,7 @@ namespace UnityEssentials
 
             var go = new GameObject();
             go.transform.parent = document.transform;
-            go.AddComponent<UIElementLink>().SetElementPath(element);
+            go.AddComponent<UIElementLink>().SetElementPath(path);
 
             Selection.activeGameObject = go;
         }

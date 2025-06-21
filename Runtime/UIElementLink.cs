@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling.Memory.Experimental;
 using UnityEngine.UIElements;
 
 namespace UnityEssentials
@@ -63,6 +62,7 @@ namespace UnityEssentials
             if (selectedPath == null || !selectedPath.Any())
                 return;
 
+            Data ??= new();
             Data.Path = selectedPath.ToArray();
             Data.Path[^1].OrderIndex = orderIndex;
 
@@ -76,6 +76,7 @@ namespace UnityEssentials
             if (path == null || _document?.rootVisualElement == null)
                 return;
 
+            Data ??= new();
             Data.Path = path.ToArray();
             RefreshLink();
         }
@@ -85,6 +86,7 @@ namespace UnityEssentials
             if(element == null || _document?.rootVisualElement == null)
                 return;
 
+            Data ??= new();
             Data.Path = UIBuilderHookUtilities.GetElementPath(element, out _).ToArray(); 
             RefreshLink();
         }

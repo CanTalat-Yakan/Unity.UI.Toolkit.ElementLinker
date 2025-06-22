@@ -64,6 +64,7 @@ namespace UnityEssentials
 
             var go = new GameObject();
             go.transform.parent = document.transform;
+            go.transform.localPosition = Vector3.zero;
             go.AddComponent<UIElementLink>().SetElementPath(path);
 
             Selection.activeGameObject = go;

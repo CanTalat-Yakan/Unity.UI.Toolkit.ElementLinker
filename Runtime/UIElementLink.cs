@@ -123,7 +123,7 @@ namespace UnityEssentials
             string linkedElementName = string.IsNullOrEmpty(GetName())
                 ? string.Empty
                 : $" ({GetDisplayName()})";
-            string linkedElementType = UIElementTypes.GetElementType(_linkedElement).ToString();
+            var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
 
             gameObject.name = linkedElementType + linkedElementName;
         }

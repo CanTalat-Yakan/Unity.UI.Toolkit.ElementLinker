@@ -120,10 +120,10 @@ namespace UnityEssentials
             if (Data.Path?.Length == 0)
                 return;
 
+            var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
             string linkedElementName = string.IsNullOrEmpty(GetName())
                 ? string.Empty
                 : $" ({GetDisplayName()})";
-            var linkedElementType = UIElementTypes.GetElementType(_linkedElement);
 
             gameObject.name = linkedElementType + linkedElementName;
         }

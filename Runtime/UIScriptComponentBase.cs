@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace UnityEssentials
 {
-    public class BaseScriptComponent<T> : BaseScriptComponent where T : VisualElement
+    public class UIScriptComponentBase<T> : UIScriptComponentBase where T : VisualElement
     {
         public new T[] LinkedElements => base.LinkedElements?.OfType<T>().ToArray();
         public void IterateLinkedElements(Action<T> action)
@@ -19,7 +19,7 @@ namespace UnityEssentials
         }
     }
 
-    public class BaseScriptComponent : MonoBehaviour
+    public class UIScriptComponentBase : MonoBehaviour
     {
         public UIElementType Type => FetchType();
         private UIElementType _type;

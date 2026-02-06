@@ -1,7 +1,7 @@
 {
-  "name": "com.unityessentials.uitoolkitelementlinker",
-  "version": "1.0.0",
-  "displayName": "Unity UI Toolkit ElementLinker",
+  "name": "com.unityessentials.ui.toolkit.elementlinker",
+  "version": "2.0.0",
+  "displayName": "UI Toolkit ElementLinker",
   "description": "This is a part of the UnityEssentials Ecosystem",
   "unity": "6000.0",
   "unityRelease": "",

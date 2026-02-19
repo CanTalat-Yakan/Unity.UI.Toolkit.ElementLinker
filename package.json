@@ -1,16 +1,16 @@
 {
   "name": "com.unityessentials.ui.toolkit.elementlinker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "displayName": "UI Toolkit ElementLinker",
   "description": "This is a part of the UnityEssentials Ecosystem",
   "unity": "6000.0",
   "unityRelease": "",
   "dependencies": {
-    "com.unityessentials.editor.attributes.button": "2.0.0",
-    "com.unityessentials.editor.attributes.info": "2.0.0",
-    "com.unityessentials.editor.attributes.onvaluechanged": "2.0.0",
-    "com.unityessentials.editor.hooks.hierarchy": "2.0.0",
-    "com.unityessentials.editor.hooks.uibuilder": "2.0.0"
+    "com.unityessentials.editor.attributes.button": "~2.0.0",
+    "com.unityessentials.editor.attributes.info": "~2.0.0",
+    "com.unityessentials.editor.attributes.onvaluechanged": "~2.0.0",
+    "com.unityessentials.editor.hooks.hierarchy": "~2.0.0",
+    "com.unityessentials.editor.hooks.uibuilder": "~2.0.0"
   },
   "keywords": [],
   "author": {

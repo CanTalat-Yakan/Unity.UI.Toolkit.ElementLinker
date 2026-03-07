@@ -53,7 +53,7 @@ namespace UnityEssentials
         {
             var path = UIBuilderHookUtilities.GetSelectedElementPath(out _);
             var asset = UIBuilderHook.VisualTreeAsset;
-            var document = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+            var document = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Exclude)
                 .Where(d => d.visualTreeAsset == asset)
                 .FirstOrDefault();
             if (document == null)
